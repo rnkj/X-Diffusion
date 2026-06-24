@@ -1,0 +1,27 @@
+task: mug_on_rack
+mode: robot_only
+run_name: robot_only
+seed: 42
+device: cpu
+epochs: 3
+steps_per_epoch: 8
+max_val_batches: 8
+batch_size: 4
+num_workers: 0
+lr: 0.0001
+grad_clip: 5.0
+obs_horizon: 1
+action_horizon: 8
+pred_horizon: 8
+use_ee_data: true
+balanced_sampling_weights: null
+train_demo_ids:
+  - demo00000
+  - demo00001
+  - demo00002
+  - demo00003
+  - demo00004
+val_demo_ids:
+  - demo00005
+torch_compile: false
+integrate_classifier: false

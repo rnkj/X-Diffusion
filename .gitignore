@@ -1,0 +1,34 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+experiment_logs/
+wandb/
+data/
+
+classifier_checkpoints/
+
+# Local provenance records may contain private source paths or usernames.
+docs/agent_notes.md
+docs/source_provenance.md
+
+
+# Private datasets and run artifacts
+X-Diffusion-Data/
+X-Diffusion-Data-public/
+_private/
+*.h5
+*.npz
+*.pth
+*.ckpt
+*.pt
+*.jsonl
+*.sha256
+
+# Local planning and environment records
+AGENTS.md
+PLAN.md
+STATUS.md
+.env
+.venv/
+venv/

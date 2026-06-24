@@ -1,0 +1,16 @@
+diffusers==0.29.2
+einops>=0.7
+h5py>=3.10
+imageio>=2.31
+line_profiler>=4.1
+matplotlib>=3.8
+numpy>=1.26,<3
+opencv-python>=4.8
+pyrallis==0.3.1
+PyYAML>=6.0
+scipy>=1.11
+termcolor>=2.4
+torch>=2.1
+torchvision>=0.16
+tqdm>=4.66
+zarr>=2.16,<3
