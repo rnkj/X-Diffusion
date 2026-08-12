@@ -21,8 +21,21 @@ from models.policy_nets import ConditionalUnet1D, TransformerForDiffusion
 from models.train_utils import absolute_to_delta_action, delta_to_absolute_action
 from models.keypoint_map_predictor import load_keypoint_map_predictor
 from common_utils.data_aug import RandomShiftsAug
-from baselines.models.action_normalizer import ActionNormalizer
-from baselines.models.dp_net import MultiviewCondUnet, MultiviewCondUnetConfig
+
+try:
+    from baselines.models.dp_net import MultiviewCondUnet, MultiviewCondUnetConfig
+except ImportError:
+    # baselines is not part of the public release, and only ImageDiffusionPolicy needs it.
+    @dataclass
+    class MultiviewCondUnetConfig:
+        pass
+
+    class MultiviewCondUnet:
+        def __init__(self, *args, **kwargs):
+            raise ImportError(
+                "ImageDiffusionPolicy requires the baselines package, which is not part of "
+                "the public X-Diffusion release."
+            )
 
 
 @dataclass

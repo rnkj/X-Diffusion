@@ -8,18 +8,18 @@ from typing import Dict, List
 
 import matplotlib.pyplot as plt
 
-EXPECTED_RUN_ORDER = [
-    "m5_xdiffusion",
-    "m6_filtered",
-    "m4_naive",
-    "m4_robot_only",
+EXPECTED_MODE_ORDER = [
+    "xdiffusion",
+    "filtered",
+    "naive",
+    "robot_only",
 ]
 
-EXPECTED_RUN_LABELS = {
-    "m5_xdiffusion": "X-Diffusion",
-    "m6_filtered": "Filtered co-training",
-    "m4_naive": "Naive co-training",
-    "m4_robot_only": "Robot-only",
+EXPECTED_MODE_LABELS = {
+    "xdiffusion": "X-Diffusion",
+    "filtered": "Filtered co-training",
+    "naive": "Naive co-training",
+    "robot_only": "Robot-only",
 }
 
 
@@ -30,8 +30,8 @@ def parse_args() -> argparse.Namespace:
         nargs="+",
         required=True,
         help=(
-            "Validated training run directories, for example directories like "
-            "m5_xdiffusion or m4_robot_only that contain metrics.jsonl and validation_report.json"
+            "Validated training run directories containing metrics.jsonl and validation_report.json, "
+            "one per mode: xdiffusion, filtered, naive, robot_only"
         ),
     )
     parser.add_argument("--output", help="Optional PNG output path")
@@ -56,11 +56,16 @@ def collect_run_summary(run_dir: Path) -> Dict[str, float | str]:
     validation = load_json(run_dir / "validation_report.json")
     if not validation.get("valid", False):
         raise ValueError(f"Run is not validated: {run_dir}")
+    mode = validation.get("mode")
+    if mode not in EXPECTED_MODE_LABELS:
+        expected = ", ".join(EXPECTED_MODE_ORDER)
+        raise ValueError(f"Run {run_dir} reports unsupported mode {mode!r}. Expected one of: {expected}")
     rows = load_metrics(run_dir / "metrics.jsonl")
     min_val = min(float(row["val_loss"]) for row in rows)
     return {
         "run_name": run_dir.name,
-        "label": EXPECTED_RUN_LABELS[run_dir.name],
+        "mode": mode,
+        "label": EXPECTED_MODE_LABELS[mode],
         "min_val_loss": min_val,
     }
 
@@ -72,15 +77,21 @@ def default_output_path(run_dirs: List[Path]) -> Path:
 
 
 def plot_validation_losses(run_dirs: List[Path], output_path: Path) -> List[Dict[str, float | str]]:
-    run_names = {path.name for path in run_dirs}
-    expected_names = set(EXPECTED_RUN_LABELS)
-    if run_names != expected_names:
-        missing = sorted(expected_names - run_names)
-        extra = sorted(run_names - expected_names)
-        raise ValueError(f"Run set mismatch. Missing={missing} Extra={extra}")
+    summary_by_mode: Dict[str, Dict[str, float | str]] = {}
+    for run_dir in run_dirs:
+        summary = collect_run_summary(run_dir)
+        mode = str(summary["mode"])
+        if mode in summary_by_mode:
+            raise ValueError(
+                f"Mode {mode!r} appears twice: {summary_by_mode[mode]['run_name']} and {run_dir.name}"
+            )
+        summary_by_mode[mode] = summary
 
-    run_by_name = {path.name: path for path in run_dirs}
-    summaries = [collect_run_summary(run_by_name[name]) for name in EXPECTED_RUN_ORDER]
+    missing = [mode for mode in EXPECTED_MODE_ORDER if mode not in summary_by_mode]
+    if missing:
+        raise ValueError(f"Run set mismatch. Missing modes={missing}")
+
+    summaries = [summary_by_mode[mode] for mode in EXPECTED_MODE_ORDER]
     labels = [item["label"] for item in summaries]
     values = [item["min_val_loss"] for item in summaries]
 

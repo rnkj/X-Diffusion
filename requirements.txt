@@ -1,5 +1,6 @@
 diffusers==0.29.2
 einops>=0.7
+fpsample>=1.0
 h5py>=3.10
 imageio>=2.31
 line_profiler>=4.1

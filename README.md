@@ -68,7 +68,15 @@ python scripts/evaluate_classifier_noise_sweep.py --run_dir <classifier_run_dir>
 where `<classifier_run_dir>` is the output directory created by
 `scripts/train_classifier.py`.
 
-You can also visualize the minimum validation loss across the four public modes:
+You can also visualize the minimum validation loss across the four public modes.
+This reads each run's `validation_report.json`, so validate every run first:
+```bash
+python scripts/validate_run.py --run_dir <run_dir>
+```
+
+Then plot the comparison:
 ```bash
 python scripts/plot_validation_losses.py --runs <xdiffusion_run_dir> <filtered_run_dir> <naive_run_dir> <robot_only_run_dir>
 ```
+Each run directory is matched by the training mode recorded in its validation
+report, so the directory names themselves can be anything.
