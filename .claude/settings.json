@@ -18,15 +18,15 @@
     "failIfUnavailable": true,
     "allowUnsandboxedCommands": false,
     "filesystem": {
-      "denyRead": ["~/", "./archive"],
+      "denyRead": ["~"],
       "allowRead": [
         ".", 
-        "~/.cache/", 
-        "~/.claude/", 
-        "~/.config/", 
-        "~/.local/", 
-        "~/.pixi/", 
-        "~/.uv/"
+        "~/.cache", 
+        "~/.claude", 
+        "~/.config", 
+        "~/.local", 
+        "~/.pixi", 
+        "~/.uv"
       ]
     },
     "network": {
