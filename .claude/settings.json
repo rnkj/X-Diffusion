@@ -1,0 +1,41 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/check_project_path.sh\""
+          }
+        ]
+      }
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "failIfUnavailable": true,
+    "allowUnsandboxedCommands": false,
+    "filesystem": {
+      "denyRead": ["~/", "./archive"],
+      "allowRead": [
+        ".", 
+        "~/.cache/", 
+        "~/.claude/", 
+        "~/.config/", 
+        "~/.local/", 
+        "~/.pixi/", 
+        "~/.uv/"
+      ]
+    },
+    "network": {
+      "allowedDomains": [
+        "huggingface.co",
+        "*.huggingface.co",
+        "api.wandb.ai",
+        "*.wandb.ai"
+      ]
+    }
+  }
+}

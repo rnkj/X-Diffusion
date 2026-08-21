@@ -26,7 +26,6 @@ _private/
 *.sha256
 
 # Local planning and environment records
-AGENTS.md
 PLAN.md
 STATUS.md
 .env
