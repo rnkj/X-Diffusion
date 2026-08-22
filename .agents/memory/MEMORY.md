@@ -1,0 +1,2 @@
+- [Verifying classifier on official dataset](../../local/docs/verify-classification.md)
+- [Custom dataset](./inspect_own_dataset.md)

@@ -1,0 +1,46 @@
+[project]
+name = "x-diffusion"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "av>=12",
+    "diffusers==0.29.2",
+    # Required to unpickle WiLoR's detector.pt, which was saved with dill.
+    "dill>=0.3",
+    "einops>=0.7",
+    "fpsample>=1.0",
+    "h5py>=3.10",
+    "imageio>=2.31",
+    "line-profiler>=4.1",
+    "matplotlib>=3.8",
+    "numpy>=1.26,<3",
+    "opencv-python>=4.8",
+    "pyrallis==0.3.1",
+    "pyrender>=0.1.45",
+    "pytorch-lightning>=2.0",
+    "PyYAML>=6.0",
+    "scikit-image>=0.22",
+    "scipy>=1.11",
+    "smplx==0.1.28",
+    "termcolor>=2.4",
+    "timm>=0.9",
+    "torch==2.11.0",
+    "torchvision==0.26.0",
+    "tqdm>=4.66",
+    "trimesh>=4.0",
+    "ultralytics>=8.3",
+    "yacs>=0.1.8",
+    "zarr>=2.16,<3",
+]
+
+[tool.uv]
+package = false
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu128" }]
+torchvision = [{ index = "pytorch-cu128" }]

@@ -1,41 +1,23 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Read|Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/check_project_path.sh\""
-          }
-        ]
-      }
+  "permissions": {
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.gnupg/**)"
+    ],
+    "ask": [
+      "Bash(rm *)",
+      "Bash(git push *)",
+      "Bash(git tag -d *)",
+      "Bash(git branch -D *)"
     ]
-  },
-  "sandbox": {
-    "enabled": true,
-    "autoAllowBashIfSandboxed": true,
-    "failIfUnavailable": true,
-    "allowUnsandboxedCommands": false,
-    "filesystem": {
-      "denyRead": ["~"],
-      "allowRead": [
-        ".", 
-        "~/.cache", 
-        "~/.claude", 
-        "~/.config", 
-        "~/.local", 
-        "~/.pixi", 
-        "~/.uv"
-      ]
-    },
-    "network": {
-      "allowedDomains": [
-        "huggingface.co",
-        "*.huggingface.co",
-        "api.wandb.ai",
-        "*.wandb.ai"
-      ]
-    }
   }
 }
